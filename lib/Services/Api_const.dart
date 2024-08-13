@@ -1,0 +1,2 @@
+String Base_URL= "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyAzMppwavNC4NjX5hTY_nvnM_drz7Bia9E";
+String Api_key ="AIzaSyAzMppwavNC4NjX5hTY_nvnM_drz7Bia9E";

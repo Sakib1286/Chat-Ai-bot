@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "374516738206",
+    "project_id": "cyberchat-da7ef",
+    "storage_bucket": "cyberchat-da7ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374516738206:android:269ecf9f11b1381ff7f38f",
+        "android_client_info": {
+          "package_name": "com.example.cyberchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3lvKemBBmFA2HSt3PXmvbLZEgZh4cW0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
