@@ -1,4 +1,5 @@
 import 'package:cyberchat/Screen/splash.dart';
+import 'package:cyberchat/Services/email_verification.dart';
 import 'package:cyberchat/const.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print("this is api key ------------ ${dotenv.env["API_KEY"]}");
     return GetMaterialApp(
-
       title: "Chatbot",
       theme: ThemeData(
         brightness: Brightness.dark,

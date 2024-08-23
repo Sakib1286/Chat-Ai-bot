@@ -4,6 +4,7 @@ import 'package:cyberchat/Global_Widgets/textFeild.dart';
 import 'package:cyberchat/Screen/chatWidget.dart';
 
 import 'package:cyberchat/Services/Service.dart';
+import 'package:cyberchat/Services/email_verification.dart';
 import 'package:cyberchat/controller/api_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -25,9 +26,12 @@ class _HomePage1State extends State<HomePage1> {
   final apiController = Get.put(ApiController());
   final userid = FirebaseAuth.instance.currentUser!.uid;
 
+  final service = EmailVerification();
+
   @override
   void initState() {
     textEditingController = TextEditingController();
+    print("email verification link: ${service.checkEmailVerification()}");
     super.initState();
   }
 
@@ -73,51 +77,46 @@ class _HomePage1State extends State<HomePage1> {
           child: Column(
             children: [
               Flexible(
-                  child:
-                       StreamBuilder(
-                         stream:FirebaseFirestore.instance.collection("users")
-                           .doc(userid)
-                           .collection("Data")
-                           .snapshots(),
-                         builder: (context, snapshot) {
-                           if (snapshot.connectionState ==
-                               ConnectionState.waiting) {
-                             return SpinKitThreeBounce(
-                               color: Colors.lightGreenAccent,
-                               size: 18,
-                             );
-                           }
-                           if (snapshot.hasError) {
-                             return Center(
-                                 child: Text('Error: ${snapshot.error}'));
-                           }
-                           if (!snapshot.hasData ||
-                               snapshot.data!.docs.isEmpty) {
-                             return const Center(
-                                 child: Text("Let's Start Chatting With AI"));
-                           } else {
-                             WidgetsBinding.instance.addPostFrameCallback((_) {
-
-                             });
-                             return ListView.builder(
-                               itemCount: apiController.data.length,
-                               itemBuilder: (context, index) {
-                                 print(apiController.data[index]);
-                                 print(
-                                     "This is the ISLoading${apiController
-                                         .isLoading}");
-                                 return ChatWidget(
-                                   msg: apiController.data[index]["msg"]
-                                       .toString(),
-                                   chatIndex: int.parse(
-                                       apiController.data[index]["idx"]
-                                           .toString()),
-                                 );
-                               },
-                             );
-                           }
-                         }
-    )),
+                  child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(userid)
+                          .collection("Data")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return SpinKitThreeBounce(
+                            color: Colors.lightGreenAccent,
+                            size: 18,
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        }
+                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                          return const Center(
+                              child: Text("Let's Start Chatting With AI"));
+                        } else {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {});
+                          return ListView.builder(
+                            itemCount: apiController.data.length,
+                            itemBuilder: (context, index) {
+                              print(apiController.data[index]);
+                              print(
+                                  "This is the ISLoading${apiController.isLoading}");
+                              return ChatWidget(
+                                msg:
+                                    apiController.data[index]["msg"].toString(),
+                                chatIndex: int.parse(apiController.data[index]
+                                        ["idx"]
+                                    .toString()),
+                              );
+                            },
+                          );
+                        }
+                      })),
               if (apiController.isLoading) ...[
                 //     SpinKitThreeBounce(
                 // color: Colors.lightGreenAccent,
@@ -126,42 +125,41 @@ class _HomePage1State extends State<HomePage1> {
                 SizedBox(
                   height: 5,
                 ),
-
               ],
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(children: [
                   Expanded(
                       child: TextFormField(
-                        controller: apiController.controller,
-                        onChanged: (val) {
-                          apiController.onSubmit(val);
-                        },
-                        style: TextStyle(
-                          color: Colors.black,
+                    controller: apiController.controller,
+                    onChanged: (val) {
+                      apiController.onSubmit(val);
+                    },
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(12.0),
+                        constraints: BoxConstraints(
+                          maxHeight: height * 0.065,
+                          maxWidth: width,
                         ),
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(12.0),
-                            constraints: BoxConstraints(
-                              maxHeight: height * 0.065,
-                              maxWidth: width,
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: "How i can help you",
-                            hintStyle:
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "How i can help you",
+                        hintStyle:
                             TextStyle(color: Colors.black.withOpacity(.5)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                                borderSide:
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide:
                                 BorderSide(color: Colors.black, width: 1.0)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ))),
-                      )),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 1.0,
+                            ))),
+                  )),
                   IconButton(
                       onPressed: () async {
                         try {

@@ -5,9 +5,9 @@ import 'package:cyberchat/Global_Widgets/button.dart';
 import 'package:cyberchat/Global_Widgets/textFeild.dart';
 import 'package:cyberchat/Screen/auth/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -193,6 +193,8 @@ class _SignupPageState extends State<SignupPage> {
 
       if (cred.user != null) {
         //Store The Data
+        await cred.user!.sendEmailVerification();
+        print('Verification email sent');
 
         //Update DisplayName
         await FirebaseAuth.instance.currentUser!.updateDisplayName(username);
